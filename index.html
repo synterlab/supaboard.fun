@@ -9,6 +9,29 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap" rel="stylesheet"/>
 <style>
+/* ── ANNOUNCEMENT BAR ── */
+#ann-bar{
+  position:relative;z-index:1000;
+  background:var(--ink);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  padding:.55rem 3rem;gap:.6rem;font-size:.8rem;font-weight:500;
+  text-align:center;
+}
+#ann-bar a{
+  color:#a5b4fc;font-weight:700;text-decoration:none;
+  display:inline-flex;align-items:center;gap:.3rem;
+  transition:color .18s;
+}
+#ann-bar a:hover{color:#fff}
+#ann-bar .ann-x-icon{display:inline-flex;align-items:center}
+#ann-bar .ann-sep{color:#4b5563;margin:0 .4rem}
+#ann-close{
+  position:absolute;right:.85rem;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:#6b7280;font-size:1rem;line-height:1;
+  cursor:pointer;padding:2px 5px;transition:color .18s;
+}
+#ann-close:hover{color:#fff}
+
 /* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
@@ -467,6 +490,19 @@ footer{border-top:1px solid var(--border);padding:3rem 5vw 2rem}
 </head>
 <body>
 
+<!-- ════ ANNOUNCEMENT BAR ════ -->
+<div id="ann-bar">
+  <span>Follow us for updates, tips, and early access</span>
+  <span class="ann-sep">—</span>
+  <a href="https://x.com/Supaboardfun" target="_blank" rel="noopener noreferrer">
+    <span class="ann-x-icon">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </span>
+    @Supaboardfun
+  </a>
+  <button id="ann-close" onclick="dismissAnn()" aria-label="Dismiss">✕</button>
+</div>
+
 <!-- ════ NAV ════ -->
 <nav id="nav">
   <!-- LOGO -->
@@ -903,7 +939,7 @@ footer{border-top:1px solid var(--border);padding:3rem 5vw 2rem}
   <div class="ft-bottom">
     <p class="ft-copy">2026 Supaboard.fun. All rights reserved.</p>
     <div class="ft-social">
-      <a href="#" class="soc" title="Twitter / X" aria-label="Twitter">
+      <a href="https://x.com/Supaboardfun" target="_blank" rel="noopener noreferrer" class="soc" title="@Supaboardfun on X" aria-label="X (Twitter)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       </a>
       <a href="#" class="soc" title="LinkedIn" aria-label="LinkedIn">
@@ -919,6 +955,15 @@ footer{border-top:1px solid var(--border);padding:3rem 5vw 2rem}
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
 
 <script>
+/* ── Announcement bar dismiss ── */
+function dismissAnn(){
+  var bar=document.getElementById('ann-bar');
+  if(!bar)return;
+  bar.style.transition='opacity .25s,max-height .3s,padding .3s';
+  bar.style.opacity='0';bar.style.maxHeight='0';bar.style.padding='0';bar.style.overflow='hidden';
+  setTimeout(function(){bar.remove();},320);
+}
+
 /* ── Helpers ── */
 function goto(sel){var el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth'});}
 
