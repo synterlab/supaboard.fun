@@ -4,671 +4,766 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Supaboard.fun | Your Data, Instantly Clear</title>
-  <meta name="description" content="Connect your database, ask questions in plain English, and get charts and dashboards in seconds. No SQL needed." />
+  <meta name="description" content="Connect your database, ask questions in plain English, get charts in seconds. No SQL needed." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap" rel="stylesheet" />
 
-    :root {
-      --bg: #ffffff;
-      --bg2: #f7f7f8;
-      --bg3: #efefef;
-      --border: #e4e4e7;
-      --text: #111112;
-      --muted: #71717a;
-      --accent: #5b3de8;
-      --accent-light: #ede9fd;
-    }
+<style>
+/* ─── RESET ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#111;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+img{display:block;max-width:100%}
 
-    html { scroll-behavior: smooth; }
+/* ─── TOKENS ─── */
+:root{
+  --ink:#0f0f10;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --bg2:#f9fafb;
+  --bg3:#f3f4f6;
+  --accent:#5b3de8;
+  --accent-h:#4c30d4;
+  --accent-bg:#edeafd;
+  --green:#16a34a;
+  --green-bg:#dcfce7;
+  --radius:12px;
+  --shadow:0 4px 24px rgba(0,0,0,.08);
+  --shadow-lg:0 12px 48px rgba(0,0,0,.12);
+}
 
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:62px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 5vw;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  transition:box-shadow .2s;
+}
+nav.scrolled{box-shadow:0 2px 16px rgba(0,0,0,.06)}
+.nav-logo{font-size:1.05rem;font-weight:800;letter-spacing:-.5px}
+.nav-logo em{font-style:normal;color:var(--accent)}
+.nav-center{display:flex;gap:1.75rem;align-items:center}
+.nav-center a{color:var(--muted);font-size:.875rem;font-weight:500;transition:color .2s;position:relative;padding-bottom:2px}
+.nav-center a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .2s;transform-origin:left}
+.nav-center a:hover{color:var(--ink)}
+.nav-center a:hover::after{transform:scaleX(1)}
+.nav-right{display:flex;gap:.6rem;align-items:center}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--ink);padding:.42rem 1rem;border-radius:8px;font-size:.85rem;font-weight:600;transition:border-color .2s,background .2s}
+.btn-ghost:hover{background:var(--bg2);border-color:#d1d5db}
+.btn-nav{background:var(--ink);color:#fff;padding:.42rem 1.1rem;border-radius:8px;font-size:.85rem;font-weight:600;transition:opacity .2s,transform .15s}
+.btn-nav:hover{opacity:.82;transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:5px;background:none;border:none}
+.hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .3s}
 
-    a { text-decoration: none; color: inherit; }
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:90px 5vw 60px;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(91,61,232,.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;
+  max-width:1140px;width:100%;
+}
+.hero-text{text-align:left}
+.pill{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:var(--accent-bg);color:var(--accent);
+  font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  padding:.28rem .85rem;border-radius:999px;margin-bottom:1.25rem;
+}
+.pill::before{content:'✦';font-size:.6rem}
+.hero-h1{
+  font-size:clamp(2.3rem,4.5vw,3.6rem);font-weight:800;line-height:1.1;letter-spacing:-1.5px;
+  margin-bottom:1.1rem;
+}
+.hero-h1 em{font-style:normal;color:var(--accent)}
+.hero-sub{color:var(--muted);font-size:1.05rem;line-height:1.72;max-width:440px;margin-bottom:2rem}
+.hero-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.btn-cta{
+  background:var(--accent);color:#fff;padding:.82rem 1.8rem;border-radius:9px;
+  font-size:.97rem;font-weight:700;border:none;
+  transition:background .2s,transform .15s,box-shadow .2s;
+  box-shadow:0 4px 20px rgba(91,61,232,.35);
+}
+.btn-cta:hover{background:var(--accent-h);transform:translateY(-2px);box-shadow:0 8px 28px rgba(91,61,232,.4)}
+.btn-outline{
+  background:#fff;color:var(--ink);padding:.82rem 1.8rem;border-radius:9px;
+  font-size:.97rem;font-weight:600;border:1.5px solid var(--border);
+  transition:border-color .2s,background .2s,transform .15s;
+}
+.btn-outline:hover{border-color:#c4b5fd;background:var(--accent-bg);transform:translateY(-2px)}
+.hero-note{color:var(--muted);font-size:.78rem;display:flex;align-items:center;gap:.4rem}
+.hero-note::before{content:'✓';color:var(--green);font-weight:700}
 
-    /* ====== NAV ====== */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5vw; height: 60px;
-      background: rgba(255,255,255,0.94);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text); }
-    .nav-logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 1.75rem; align-items: center; }
-    .nav-links a { color: var(--muted); font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      background: var(--text); color: #fff; padding: 0.45rem 1.1rem;
-      border-radius: 7px; font-size: 0.875rem; font-weight: 600;
-      transition: opacity 0.2s;
-    }
-    .nav-cta:hover { opacity: 0.78; }
-    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
-    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+/* ─── STATS STRIP ─── */
+.stats-strip{
+  display:flex;gap:2rem;margin-top:2rem;padding-top:2rem;
+  border-top:1px solid var(--border);flex-wrap:wrap;
+}
+.stat-item .stat-val{font-size:1.6rem;font-weight:800;letter-spacing:-1px;color:var(--ink)}
+.stat-item .stat-label{font-size:.75rem;color:var(--muted);font-weight:500}
 
-    /* ====== HERO ====== */
-    .hero {
-      padding: 116px 5vw 72px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .hero-label {
-      display: inline-block;
-      background: var(--accent-light); color: var(--accent);
-      font-size: 0.74rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.08em; padding: 0.3rem 0.85rem; border-radius: 999px;
-      margin-bottom: 1.5rem;
-    }
-    h1 {
-      font-size: clamp(2.2rem, 5.5vw, 4rem);
-      font-weight: 800; line-height: 1.1; letter-spacing: -1.5px;
-      max-width: 780px; margin: 0 auto 1.25rem;
-    }
-    h1 em { font-style: normal; color: var(--accent); }
-    .hero-sub {
-      color: var(--muted); font-size: clamp(1rem, 2vw, 1.15rem);
-      max-width: 500px; margin: 0 auto 2.25rem; line-height: 1.7;
-    }
-    .hero-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-    .btn-primary {
-      background: var(--accent); color: #fff;
-      padding: 0.8rem 1.75rem; border-radius: 8px;
-      font-size: 0.95rem; font-weight: 600; border: none; cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
-    .btn-secondary {
-      background: var(--bg); color: var(--text);
-      padding: 0.8rem 1.75rem; border-radius: 8px;
-      font-size: 0.95rem; font-weight: 600;
-      border: 1px solid var(--border); cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .btn-secondary:hover { background: var(--bg2); transform: translateY(-1px); }
-    .hero-note { color: var(--muted); font-size: 0.78rem; margin-top: 0.85rem; }
+/* ─── DEMO PANEL ─── */
+.demo-panel{
+  background:#fff;border:1px solid var(--border);border-radius:18px;
+  overflow:hidden;box-shadow:var(--shadow-lg);
+  transform:perspective(1200px) rotateY(-4deg) rotateX(2deg);
+  transition:transform .4s ease;
+}
+.demo-panel:hover{transform:perspective(1200px) rotateY(0deg) rotateX(0deg)}
+.demo-titlebar{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:.65rem 1rem;display:flex;align-items:center;gap:.5rem;
+}
+.dtb-dots{display:flex;gap:5px}
+.dtb-dot{width:10px;height:10px;border-radius:50%}
+.dtb-dot:nth-child(1){background:#ff5f57}
+.dtb-dot:nth-child(2){background:#febc2e}
+.dtb-dot:nth-child(3){background:#28c840}
+.dtb-url{
+  flex:1;background:#fff;border:1px solid var(--border);border-radius:5px;
+  padding:.18rem .75rem;font-size:.72rem;color:var(--muted);text-align:center;margin:0 .5rem;
+}
+.demo-sidebar{
+  display:grid;grid-template-columns:52px 1fr;
+  border-top:none;min-height:360px;
+}
+.demo-nav{
+  background:var(--bg3);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;gap:2px;padding:.5rem .3rem;align-items:center;
+}
+.dnav-icon{
+  width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;cursor:pointer;transition:background .2s;color:var(--muted);
+}
+.dnav-icon.active,.dnav-icon:hover{background:var(--accent-bg);color:var(--accent)}
+.demo-main{padding:1rem;display:flex;flex-direction:column;gap:.75rem;overflow:hidden}
+.demo-input-row{
+  display:flex;align-items:center;gap:.6rem;
+  background:var(--accent-bg);border:1.5px solid #c4b5fd;border-radius:9px;
+  padding:.7rem 1rem;min-height:46px;
+}
+.demo-input-icon{font-size:1rem;flex-shrink:0}
+#demo-q{font-size:.82rem;color:var(--accent);font-weight:500;flex:1}
+.demo-cursor{
+  display:inline-block;width:2px;height:.9em;background:var(--accent);
+  margin-left:1px;vertical-align:middle;
+  animation:blink .65s steps(1) infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.demo-results{
+  display:grid;grid-template-columns:1fr 1fr;gap:.6rem;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.demo-results.show{opacity:1;transform:none}
+.demo-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:9px;
+  padding:.85rem;
+}
+.dc-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem}
+.dc-val{font-size:1.3rem;font-weight:800;letter-spacing:-.5px;color:var(--ink)}
+.dc-val.g{color:var(--green)}
+.dc-val.p{color:var(--accent)}
+.dc-bars{display:flex;align-items:flex-end;gap:3px;height:38px;margin-top:.4rem}
+.dc-bar{flex:1;border-radius:3px 3px 0 0;transition:height .6s cubic-bezier(.34,1.56,.64,1)}
+.dc-bar.pu{background:#ddd6fe}
+.dc-bar.gr{background:#bbf7d0}
+.demo-table{background:var(--bg2);border:1px solid var(--border);border-radius:9px;overflow:hidden;grid-column:1/-1}
+.dt-head{display:grid;grid-template-columns:1fr auto auto;background:var(--bg3);border-bottom:1px solid var(--border);padding:.4rem .75rem;gap:1rem}
+.dt-head span{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.dt-row{display:grid;grid-template-columns:1fr auto auto;padding:.4rem .75rem;gap:1rem;border-bottom:1px solid var(--border);align-items:center;transition:background .15s}
+.dt-row:last-child{border-bottom:none}
+.dt-row:hover{background:var(--bg3)}
+.dt-row span{font-size:.75rem}
+.dt-row .badge{font-size:.65rem;font-weight:700;padding:.15rem .55rem;border-radius:999px;white-space:nowrap}
+.badge.up{background:#dcfce7;color:#15803d}
+.badge.dn{background:#fee2e2;color:#dc2626}
 
-    /* ====== DEMO WINDOW ====== */
-    .demo-window {
-      max-width: 760px; margin: 3rem auto 0;
-      background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
-      overflow: hidden; box-shadow: 0 8px 48px rgba(0,0,0,0.1);
-    }
-    .demo-topbar {
-      background: var(--bg2); padding: 0.65rem 1rem;
-      display: flex; align-items: center; gap: 0.45rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .d-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .d-dot:nth-child(1) { background: #ff5f57; }
-    .d-dot:nth-child(2) { background: #ffbd2e; }
-    .d-dot:nth-child(3) { background: #28ca41; }
-    .demo-url {
-      flex: 1; background: var(--bg); border: 1px solid var(--border);
-      border-radius: 5px; padding: 0.2rem 0.75rem;
-      font-size: 0.75rem; color: var(--muted); text-align: center;
-    }
-    .demo-body { padding: 1.5rem; }
-    .demo-query-wrap {
-      background: var(--accent-light); border: 1px solid #d4c8fb;
-      border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 1.25rem;
-      display: flex; align-items: center; gap: 0.6rem; min-height: 50px;
-    }
-    .demo-query-icon { font-size: 1rem; flex-shrink: 0; }
-    #demo-query-text {
-      font-size: 0.88rem; color: var(--accent); font-weight: 500;
-    }
-    .demo-cursor {
-      display: inline-block; width: 2px; height: 1em;
-      background: var(--accent); margin-left: 1px; vertical-align: middle;
-      animation: blink 0.7s steps(1) infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+/* ─── DIVIDER ─── */
+.divider{width:100%;border:none;border-top:1px solid var(--border)}
 
-    .demo-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .demo-chart {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1rem;
-    }
-    .demo-chart-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.06em; }
-    .demo-chart-val { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text); }
-    .demo-chart-val.green { color: #16a34a; }
-    .demo-bars { display: flex; align-items: flex-end; gap: 4px; height: 48px; margin-top: 0.5rem; }
-    .demo-bar {
-      flex: 1; border-radius: 3px 3px 0 0;
-      transform-origin: bottom;
-      transform: scaleY(0);
-      transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .demo-bar.purple { background: var(--accent-light); }
-    .demo-bar.gr { background: #dcfce7; }
-    .demo-bar.visible { transform: scaleY(1); }
+/* ─── LOGOS ─── */
+.logos-section{padding:2.5rem 5vw;text-align:center}
+.logos-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1.25rem}
+.logos-row{display:flex;justify-content:center;flex-wrap:wrap;gap:2.5rem}
+.logos-row span{color:#d1d5db;font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;transition:color .2s}
+.logos-row span:hover{color:#9ca3af}
 
-    /* ====== FADE-IN on scroll ====== */
-    .reveal {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
-    }
-    .reveal.visible { opacity: 1; transform: none; }
+/* ─── SECTION BASE ─── */
+section{padding:80px 5vw}
+.s-inner{max-width:1100px;margin:0 auto}
+.s-inner.center{text-align:center}
+.s-label{display:inline-block;color:var(--accent);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.55rem}
+.s-h2{font-size:clamp(1.75rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.8px;line-height:1.15;margin-bottom:.75rem}
+.s-h2 em{font-style:normal;color:var(--accent)}
+.s-sub{color:var(--muted);font-size:.95rem;line-height:1.72;max-width:520px;margin-bottom:2.5rem}
+.s-inner.center .s-sub{margin-left:auto;margin-right:auto}
 
-    /* ====== LOGOS ====== */
-    .logos {
-      padding: 2.5rem 5vw; text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .logos p { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.25rem; }
-    .logo-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 2.5rem; }
-    .logo-item { color: #c0c0c8; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+/* ─── HOW IT WORKS ─── */
+.how-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;position:relative}
+.steps-grid::before{
+  content:'';position:absolute;top:24px;left:calc(33.33% - 0px);right:calc(33.33% - 0px);
+  height:1px;background:linear-gradient(90deg,var(--accent-bg),var(--accent),var(--accent-bg));
+  z-index:0;
+}
+.step-card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.75rem;text-align:left;position:relative;z-index:1;
+  transition:box-shadow .25s,transform .25s;
+}
+.step-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+.step-num{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--accent-bg);color:var(--accent);border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:800;margin-bottom:1.1rem;
+}
+.step-card h3{font-size:.97rem;font-weight:700;margin-bottom:.4rem}
+.step-card p{color:var(--muted);font-size:.85rem;line-height:1.65}
 
-    /* ====== SECTION ====== */
-    section { padding: 72px 5vw; }
-    .section-label {
-      display: inline-block; color: var(--accent); font-size: 0.72rem;
-      font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.6rem;
-    }
-    h2 {
-      font-size: clamp(1.7rem, 3.5vw, 2.5rem); font-weight: 800;
-      letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 0.75rem;
-    }
-    h2 em { font-style: normal; color: var(--accent); }
-    .section-sub { color: var(--muted); font-size: 0.95rem; max-width: 520px; line-height: 1.7; margin-bottom: 2.5rem; }
+/* ─── FEATURES ─── */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem}
+.feat-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.75rem;
+  transition:box-shadow .25s,transform .25s,border-color .25s;
+}
+.feat-card:hover{box-shadow:var(--shadow);transform:translateY(-3px);border-color:#c4b5fd}
+.feat-icon{
+  width:44px;height:44px;border-radius:11px;background:var(--accent-bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;margin-bottom:1rem;
+}
+.feat-card h3{font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+.feat-card p{color:var(--muted);font-size:.85rem;line-height:1.65}
 
-    /* ====== HOW IT WORKS ====== */
-    .how { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .how-inner { max-width: 1080px; margin: 0 auto; text-align: center; }
-    .how-inner .section-sub { margin: 0 auto 2.5rem; }
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
-    .step {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
-      padding: 1.75rem 1.5rem; text-align: left;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-    .step:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); transform: translateY(-2px); }
-    .step-num {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: var(--accent-light); color: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;
-    }
-    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
-    .step p { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
+/* ─── CONNECTORS ─── */
+.connectors-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.conn-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin-top:.5rem}
+.conn-tag{
+  background:#fff;border:1px solid var(--border);border-radius:8px;
+  padding:.42rem .9rem;font-size:.8rem;color:var(--muted);
+  display:flex;align-items:center;gap:.4rem;
+  transition:color .2s,border-color .2s,transform .15s,background .2s;cursor:default;
+}
+.conn-tag:hover{color:var(--ink);border-color:#c4b5fd;transform:translateY(-2px);background:var(--accent-bg)}
+.conn-tag .conn-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 
-    /* ====== FEATURES ====== */
-    .features-inner { max-width: 1080px; margin: 0 auto; }
-    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
-    .feature-card {
-      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
-      padding: 1.75rem; transition: box-shadow 0.2s, transform 0.2s;
-    }
-    .feature-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); transform: translateY(-2px); }
-    .feature-icon {
-      width: 42px; height: 42px; border-radius: 10px;
-      background: var(--accent-light); display: flex; align-items: center;
-      justify-content: center; font-size: 1.15rem; margin-bottom: 1rem;
-    }
-    .feature-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
-    .feature-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.65; }
+/* ─── TESTIMONIALS ─── */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem}
+.testi-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.75rem;
+  transition:box-shadow .25s,transform .25s;
+}
+.testi-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+.stars{color:#f59e0b;font-size:.8rem;letter-spacing:2px;margin-bottom:.75rem}
+.testi-card blockquote{font-size:.875rem;line-height:1.68;color:var(--ink);margin-bottom:1.25rem}
+.testi-author{display:flex;align-items:center;gap:.65rem}
+.avatar{
+  width:36px;height:36px;border-radius:50%;background:var(--accent-bg);
+  color:var(--accent);font-size:.8rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.author-name{font-size:.85rem;font-weight:700}
+.author-role{font-size:.75rem;color:var(--muted)}
 
-    /* ====== CONNECTORS ====== */
-    .connectors { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .connectors-inner { max-width: 1080px; margin: 0 auto; text-align: center; }
-    .connectors-inner .section-sub { margin: 0 auto 2rem; }
-    .connector-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; }
-    .connector-tag {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
-      padding: 0.4rem 0.85rem; font-size: 0.82rem; color: var(--muted);
-      transition: color 0.2s, border-color 0.2s, transform 0.15s;
-    }
-    .connector-tag:hover { color: var(--text); border-color: #c4b5fd; transform: translateY(-1px); }
+/* ─── PRICING ─── */
+.pricing-toggle{
+  display:inline-flex;background:var(--bg3);border-radius:999px;padding:4px;
+  margin-bottom:2.5rem;border:1px solid var(--border);
+}
+.ptog-btn{
+  padding:.4rem 1.1rem;border-radius:999px;border:none;background:none;
+  font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;
+  transition:background .2s,color .2s;
+}
+.ptog-btn.active{background:#fff;color:var(--ink);box-shadow:0 1px 6px rgba(0,0,0,.1)}
+.annual-badge{
+  font-size:.65rem;font-weight:700;background:#dcfce7;color:#15803d;
+  padding:.15rem .45rem;border-radius:999px;margin-left:.3rem;
+}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.p-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+  padding:2rem 1.75rem;text-align:left;position:relative;
+  transition:box-shadow .25s,transform .25s;
+}
+.p-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+.p-card.pop{border-color:var(--accent);background:#fff;box-shadow:0 8px 32px rgba(91,61,232,.15)}
+.pop-badge{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:var(--accent);color:#fff;font-size:.68rem;font-weight:700;
+  padding:.22rem .85rem;border-radius:999px;white-space:nowrap;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.p-name{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.55rem}
+.p-price{font-size:2.4rem;font-weight:800;letter-spacing:-1.5px;line-height:1;margin-bottom:.2rem}
+.p-price sub{font-size:.85rem;font-weight:500;color:var(--muted);letter-spacing:0}
+.p-desc{color:var(--muted);font-size:.8rem;margin-bottom:1.5rem}
+.p-list{list-style:none;display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.75rem}
+.p-list li{display:flex;gap:.5rem;font-size:.83rem;color:var(--muted);align-items:flex-start}
+.p-list li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0;margin-top:1px}
+.p-btn{
+  display:block;width:100%;text-align:center;padding:.78rem;border-radius:9px;
+  font-size:.875rem;font-weight:700;border:1.5px solid var(--border);color:var(--ink);
+  transition:background .2s,transform .15s,border-color .2s;
+}
+.p-btn:hover{background:var(--bg3);transform:translateY(-1px)}
+.p-btn.fill{background:var(--accent);border-color:var(--accent);color:#fff}
+.p-btn.fill:hover{background:var(--accent-h);opacity:1}
 
-    /* ====== TESTIMONIALS ====== */
-    .testimonials-inner { max-width: 1080px; margin: 0 auto; text-align: center; }
-    .testimonials-inner .section-sub { margin: 0 auto 2.5rem; }
-    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
-    .testi-card {
-      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
-      padding: 1.75rem; text-align: left;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-    .testi-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); transform: translateY(-2px); }
-    .testi-stars { color: #f59e0b; font-size: 0.85rem; margin-bottom: 0.75rem; letter-spacing: 2px; }
-    .testi-card p { font-size: 0.9rem; line-height: 1.65; color: var(--text); margin-bottom: 1.25rem; }
-    .testi-author { display: flex; align-items: center; gap: 0.65rem; }
-    .testi-avatar {
-      width: 34px; height: 34px; border-radius: 50%;
-      background: var(--accent-light); display: flex; align-items: center;
-      justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--accent); flex-shrink: 0;
-    }
-    .testi-name { font-size: 0.85rem; font-weight: 700; }
-    .testi-role { font-size: 0.78rem; color: var(--muted); }
+/* ─── FAQ ─── */
+.faq-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.faq-wrap{max-width:680px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:first-child{border-top:1px solid var(--border)}
+.faq-btn{
+  width:100%;background:none;border:none;padding:1.1rem 0;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  font-size:.9rem;font-weight:600;color:var(--ink);text-align:left;cursor:pointer;
+  transition:color .2s;
+}
+.faq-btn:hover{color:var(--accent)}
+.faq-icon{
+  width:24px;height:24px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;font-weight:400;color:var(--muted);flex-shrink:0;
+  transition:background .2s,transform .3s,color .2s;
+}
+.faq-item.open .faq-icon{background:var(--accent-bg);color:var(--accent);transform:rotate(45deg)}
+.faq-body{
+  max-height:0;overflow:hidden;
+  transition:max-height .35s ease,padding .3s ease;
+}
+.faq-item.open .faq-body{max-height:240px;padding-bottom:1.1rem}
+.faq-body p{font-size:.875rem;color:var(--muted);line-height:1.72}
 
-    /* ====== FAQ ====== */
-    .faq { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .faq-inner { max-width: 680px; margin: 0 auto; }
-    .faq-inner .section-sub { max-width: 100%; }
-    .faq-list { display: flex; flex-direction: column; gap: 0; }
-    .faq-item { border-bottom: 1px solid var(--border); }
-    .faq-item:first-child { border-top: 1px solid var(--border); }
-    .faq-q {
-      width: 100%; background: none; border: none; cursor: pointer;
-      padding: 1.1rem 0; text-align: left;
-      font-size: 0.95rem; font-weight: 600; color: var(--text);
-      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
-    }
-    .faq-q .faq-icon { font-size: 1.2rem; color: var(--muted); transition: transform 0.3s; flex-shrink: 0; }
-    .faq-item.open .faq-icon { transform: rotate(45deg); }
-    .faq-a {
-      font-size: 0.88rem; color: var(--muted); line-height: 1.7;
-      max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.3s ease;
-    }
-    .faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.1rem; }
+/* ─── WAITLIST ─── */
+.waitlist-section{
+  padding:80px 5vw;
+  background:linear-gradient(135deg,rgba(91,61,232,.05) 0%,rgba(91,61,232,.02) 100%);
+  border-top:1px solid var(--border);
+}
+.waitlist-inner{max-width:540px;margin:0 auto;text-align:center}
+.waitlist-inner .s-sub{margin:0 auto 2rem}
+.wl-form{display:flex;gap:.6rem;flex-direction:column;align-items:stretch}
+.wl-row{display:flex;gap:.6rem}
+.wl-input{
+  flex:1;padding:.82rem 1rem;border-radius:9px;border:1.5px solid var(--border);
+  font-size:.9rem;font-family:inherit;color:var(--ink);background:#fff;
+  transition:border-color .2s,box-shadow .2s;outline:none;
+}
+.wl-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(91,61,232,.12)}
+.wl-input::placeholder{color:#b0b7c3}
+.wl-submit{
+  background:var(--accent);color:#fff;padding:.82rem 1.5rem;border-radius:9px;
+  font-size:.9rem;font-weight:700;border:none;white-space:nowrap;
+  transition:background .2s,transform .15s,box-shadow .2s;
+  box-shadow:0 4px 16px rgba(91,61,232,.3);
+}
+.wl-submit:hover{background:var(--accent-h);transform:translateY(-1px);box-shadow:0 8px 24px rgba(91,61,232,.35)}
+.wl-note{color:var(--muted);font-size:.75rem;margin-top:.6rem}
+.wl-success{
+  display:none;align-items:center;justify-content:center;gap:.75rem;
+  padding:1.25rem 1.5rem;background:var(--green-bg);border:1px solid #86efac;border-radius:10px;
+  font-size:.9rem;font-weight:600;color:var(--green);
+}
+.wl-success.show{display:flex}
 
-    /* ====== PRICING ====== */
-    .pricing-inner { max-width: 960px; margin: 0 auto; text-align: center; }
-    .pricing-inner .section-sub { margin: 0 auto 2.5rem; }
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem; }
-    .pricing-card {
-      background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
-      padding: 2rem 1.75rem; text-align: left; position: relative;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-    .pricing-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,0.08); transform: translateY(-2px); }
-    .pricing-card.featured { border-color: var(--accent); background: var(--bg); }
-    .plan-badge {
-      position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
-      background: var(--accent); color: #fff;
-      font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.75rem;
-      border-radius: 999px; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.04em;
-    }
-    .pricing-card h3 { font-size: 0.8rem; font-weight: 700; color: var(--muted); margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; }
-    .price { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 0.2rem; }
-    .price span { font-size: 0.9rem; font-weight: 500; color: var(--muted); }
-    .price-desc { color: var(--muted); font-size: 0.82rem; margin-bottom: 1.5rem; }
-    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.75rem; }
-    .feature-list li { display: flex; gap: 0.55rem; font-size: 0.85rem; color: var(--muted); align-items: flex-start; }
-    .feature-list li::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-    .btn-plan {
-      display: block; width: 100%; text-align: center;
-      padding: 0.75rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600;
-      border: 1px solid var(--border); color: var(--text); cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .btn-plan:hover { background: var(--bg3); transform: translateY(-1px); }
-    .btn-plan.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .btn-plan.primary:hover { opacity: 0.88; }
+/* ─── FOOTER ─── */
+footer{border-top:1px solid var(--border);padding:3rem 5vw 2rem}
+.footer-top{
+  display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:3rem;
+  padding-bottom:2.5rem;border-bottom:1px solid var(--border);
+}
+.footer-brand-logo{font-size:1rem;font-weight:800;margin-bottom:.55rem}
+.footer-brand-logo em{font-style:normal;color:var(--accent)}
+.footer-brand p{color:var(--muted);font-size:.8rem;line-height:1.65;max-width:200px}
+.footer-col h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem}
+.footer-col a{display:block;color:var(--muted);font-size:.82rem;margin-bottom:.5rem;transition:color .2s}
+.footer-col a:hover{color:var(--ink)}
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;padding-top:1.75rem;
+}
+.footer-copy{color:var(--muted);font-size:.78rem}
+.footer-socials{display:flex;gap:.6rem}
+.soc-btn{
+  width:34px;height:34px;border-radius:9px;background:var(--bg2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--muted);
+  transition:border-color .2s,color .2s,background .2s;
+}
+.soc-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
 
-    /* ====== CTA ====== */
-    .cta-section {
-      text-align: center; padding: 80px 5vw;
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
-    }
-    .cta-section h2 { margin-bottom: 0.75rem; }
-    .cta-section p { color: var(--muted); max-width: 440px; margin: 0 auto 2rem; line-height: 1.7; font-size: 0.95rem; }
+/* ─── SCROLL REVEAL ─── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease}
+.reveal.in{opacity:1;transform:none}
+.reveal.delay-1{transition-delay:.1s}
+.reveal.delay-2{transition-delay:.2s}
+.reveal.delay-3{transition-delay:.3s}
 
-    /* ====== FOOTER ====== */
-    footer {
-      padding: 2.5rem 5vw; border-top: 1px solid var(--border);
-    }
-    .footer-top {
-      display: flex; flex-wrap: wrap; justify-content: space-between;
-      gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border);
-    }
-    .footer-brand .footer-logo { font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem; display: block; }
-    .footer-brand .footer-logo span { color: var(--accent); }
-    .footer-brand p { color: var(--muted); font-size: 0.82rem; max-width: 220px; line-height: 1.6; }
-    .footer-cols { display: flex; gap: 3rem; flex-wrap: wrap; }
-    .footer-col h4 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.85rem; }
-    .footer-col a { display: block; color: var(--muted); font-size: 0.82rem; margin-bottom: 0.55rem; transition: color 0.2s; }
-    .footer-col a:hover { color: var(--text); }
-    .footer-bottom {
-      display: flex; flex-wrap: wrap; justify-content: space-between;
-      align-items: center; gap: 1rem; padding-top: 1.5rem;
-    }
-    .footer-copy { color: var(--muted); font-size: 0.78rem; }
-    .footer-socials { display: flex; gap: 1rem; }
-    .footer-socials a {
-      width: 32px; height: 32px; border-radius: 8px;
-      background: var(--bg2); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.85rem; color: var(--muted); transition: border-color 0.2s, color 0.2s;
-    }
-    .footer-socials a:hover { color: var(--text); border-color: var(--accent); }
+/* ─── BACK TO TOP ─── */
+#back-top{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:400;
+  width:40px;height:40px;border-radius:50%;
+  background:var(--accent);color:#fff;border:none;
+  font-size:1rem;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(91,61,232,.35);
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .3s,transform .3s;
+}
+#back-top.show{opacity:1;transform:none;pointer-events:auto}
+#back-top:hover{background:var(--accent-h)}
 
-    /* ====== MOBILE ====== */
-    @media (max-width: 640px) {
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-      nav.open .nav-links {
-        display: flex; flex-direction: column; position: fixed;
-        top: 60px; left: 0; right: 0; background: var(--bg);
-        padding: 1.5rem 5vw 2rem; gap: 1.25rem;
-        border-bottom: 1px solid var(--border); z-index: 199;
-      }
-      .demo-charts { grid-template-columns: 1fr; }
-      .hero-actions { flex-direction: column; align-items: stretch; max-width: 300px; margin: 0 auto; }
-      .footer-top { flex-direction: column; }
-      .footer-cols { gap: 2rem; }
-      .footer-bottom { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
+/* ─── MOBILE ─── */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:2.5rem}
+  .hero-text{text-align:center}
+  .hero-sub{max-width:100%;margin-left:auto;margin-right:auto}
+  .hero-actions{justify-content:center}
+  .hero-note{justify-content:center}
+  .stats-strip{justify-content:center}
+  .demo-panel{transform:none!important}
+  .steps-grid{grid-template-columns:1fr}
+  .steps-grid::before{display:none}
+  .pricing-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2rem}
+}
+@media(max-width:640px){
+  .nav-center,.nav-right .btn-ghost{display:none}
+  .hamburger{display:flex}
+  nav.open .nav-center{
+    display:flex;flex-direction:column;
+    position:fixed;top:62px;left:0;right:0;
+    background:#fff;padding:1.5rem 5vw 2rem;gap:1.25rem;
+    border-bottom:1px solid var(--border);z-index:499;
+  }
+  nav.open .nav-center .btn-ghost{display:block}
+  nav.open .nav-right .btn-ghost{display:none}
+  .demo-results{grid-template-columns:1fr}
+  .demo-table{grid-column:auto}
+  .wl-row{flex-direction:column}
+  .footer-top{grid-template-columns:1fr}
+  .footer-cols-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+  .hero-actions{flex-direction:column;align-items:stretch;max-width:300px;margin:0 auto 1.25rem}
+}
+</style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#" class="nav-logo">Supaboard<span>.fun</span></a>
-  <div class="nav-links">
-    <a href="#features">Features</a>
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Supaboard<em>.fun</em></a>
+  <div class="nav-center" id="nav-links">
     <a href="#how">How it works</a>
+    <a href="#features">Features</a>
     <a href="#connectors">Connectors</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
-    <a href="#" class="nav-cta">Get Started</a>
+    <a href="#waitlist" class="btn-ghost">Sign in</a>
   </div>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleNav()">
+  <div class="nav-right">
+    <a href="#waitlist" class="btn-ghost">Sign in</a>
+    <a href="#waitlist" class="btn-nav">Get Started</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
     <span></span><span></span><span></span>
-  </div>
+  </button>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <span class="hero-label">Business Intelligence</span>
-  <h1>Your data, <em>instantly clear</em></h1>
-  <p class="hero-sub">Connect your database, type a question, get charts back in seconds. No SQL, no setup, no waiting.</p>
-  <div class="hero-actions">
-    <button class="btn-primary" onclick="scrollTo('#pricing')">Start for Free</button>
-    <button class="btn-secondary" onclick="scrollTo('#how')">See How It Works</button>
-  </div>
-  <p class="hero-note">Free to start. No credit card required.</p>
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
 
-  <!-- Animated Demo Window -->
-  <div class="demo-window reveal" id="demo-win">
-    <div class="demo-topbar">
-      <div class="d-dot"></div>
-      <div class="d-dot"></div>
-      <div class="d-dot"></div>
-      <div class="demo-url">app.supaboard.fun</div>
-    </div>
-    <div class="demo-body">
-      <div class="demo-query-wrap">
-        <span class="demo-query-icon">💬</span>
-        <span id="demo-query-text"></span><span class="demo-cursor" id="demo-cursor"></span>
+    <!-- LEFT -->
+    <div class="hero-text">
+      <div class="pill">Business Intelligence</div>
+      <h1 class="hero-h1">Your data,<br><em>instantly clear</em></h1>
+      <p class="hero-sub">Connect your database, type a question in plain English, and get charts and tables back in seconds. No SQL, no data team, no waiting.</p>
+      <div class="hero-actions">
+        <button class="btn-cta" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Start for Free</button>
+        <button class="btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">See How It Works</button>
       </div>
-      <div class="demo-charts" id="demo-charts" style="opacity:0;transition:opacity 0.5s;">
-        <div class="demo-chart">
-          <div class="demo-chart-label">Total Revenue</div>
-          <div class="demo-chart-val" id="demo-rev">$0</div>
-          <div class="demo-bars" id="bars-purple">
-            <div class="demo-bar purple" style="--h:60%"></div>
-            <div class="demo-bar purple" style="--h:45%"></div>
-            <div class="demo-bar purple" style="--h:80%"></div>
-            <div class="demo-bar purple" style="--h:70%"></div>
-            <div class="demo-bar purple" style="--h:100%"></div>
-            <div class="demo-bar purple" style="--h:85%"></div>
-            <div class="demo-bar purple" style="--h:75%"></div>
-          </div>
+      <p class="hero-note">Free to start. No credit card required.</p>
+      <div class="stats-strip">
+        <div class="stat-item">
+          <div class="stat-val" data-count="2400">0</div>
+          <div class="stat-label">Teams using it</div>
         </div>
-        <div class="demo-chart">
-          <div class="demo-chart-label">Growth vs Last Month</div>
-          <div class="demo-chart-val green" id="demo-growth">+0%</div>
-          <div class="demo-bars" id="bars-green">
-            <div class="demo-bar gr" style="--h:40%"></div>
-            <div class="demo-bar gr" style="--h:55%"></div>
-            <div class="demo-bar gr" style="--h:65%"></div>
-            <div class="demo-bar gr" style="--h:50%"></div>
-            <div class="demo-bar gr" style="--h:70%"></div>
-            <div class="demo-bar gr" style="--h:80%"></div>
-            <div class="demo-bar gr" style="--h:100%"></div>
-          </div>
+        <div class="stat-item">
+          <div class="stat-val" data-count="12" data-suffix="M+">0</div>
+          <div class="stat-label">Queries answered</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" data-count="30" data-prefix="" data-suffix="s avg">0</div>
+          <div class="stat-label">Time to first chart</div>
         </div>
       </div>
     </div>
+
+    <!-- RIGHT: LIVE DEMO -->
+    <div class="demo-panel" id="demo-panel">
+      <div class="demo-titlebar">
+        <div class="dtb-dots">
+          <div class="dtb-dot"></div><div class="dtb-dot"></div><div class="dtb-dot"></div>
+        </div>
+        <div class="dtb-url">app.supaboard.fun/dashboard</div>
+      </div>
+      <div class="demo-sidebar">
+        <div class="demo-nav">
+          <div class="dnav-icon active" title="Dashboard">⊞</div>
+          <div class="dnav-icon" title="Queries">❯_</div>
+          <div class="dnav-icon" title="Connectors">⛁</div>
+          <div class="dnav-icon" title="Alerts">◎</div>
+          <div class="dnav-icon" title="Settings" style="margin-top:auto">⚙</div>
+        </div>
+        <div class="demo-main">
+          <div class="demo-input-row">
+            <span class="demo-input-icon">💬</span>
+            <span id="demo-q"></span><span class="demo-cursor" id="demo-csr"></span>
+          </div>
+          <div class="demo-results" id="demo-results">
+            <div class="demo-card" id="dc1">
+              <div class="dc-label">Total Revenue</div>
+              <div class="dc-val p" id="dc-rev">$0</div>
+              <div class="dc-bars" id="dc-bars1">
+                <div class="dc-bar pu" style="height:0%"></div>
+                <div class="dc-bar pu" style="height:0%"></div>
+                <div class="dc-bar pu" style="height:0%"></div>
+                <div class="dc-bar pu" style="height:0%"></div>
+                <div class="dc-bar pu" style="height:0%"></div>
+                <div class="dc-bar pu" style="height:0%"></div>
+                <div class="dc-bar pu" style="height:0%"></div>
+              </div>
+            </div>
+            <div class="demo-card" id="dc2">
+              <div class="dc-label">Growth MoM</div>
+              <div class="dc-val g" id="dc-growth">+0%</div>
+              <div class="dc-bars" id="dc-bars2">
+                <div class="dc-bar gr" style="height:0%"></div>
+                <div class="dc-bar gr" style="height:0%"></div>
+                <div class="dc-bar gr" style="height:0%"></div>
+                <div class="dc-bar gr" style="height:0%"></div>
+                <div class="dc-bar gr" style="height:0%"></div>
+                <div class="dc-bar gr" style="height:0%"></div>
+                <div class="dc-bar gr" style="height:0%"></div>
+              </div>
+            </div>
+            <div class="demo-table">
+              <div class="dt-head">
+                <span>Product</span><span>Revenue</span><span>vs Last Month</span>
+              </div>
+              <div class="dt-row">
+                <span>Pro Plan</span>
+                <span>$142,400</span>
+                <span class="badge up">+22%</span>
+              </div>
+              <div class="dt-row">
+                <span>Starter Plan</span>
+                <span>$89,200</span>
+                <span class="badge up">+11%</span>
+              </div>
+              <div class="dt-row">
+                <span>Enterprise</span>
+                <span>$53,320</span>
+                <span class="badge dn">-4%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- LOGOS -->
-<div class="logos reveal">
-  <p>Used by teams at</p>
-  <div class="logo-row">
-    <span class="logo-item">Acme Corp</span>
-    <span class="logo-item">Nexus Labs</span>
-    <span class="logo-item">Orbit Tech</span>
-    <span class="logo-item">PeakFlow</span>
-    <span class="logo-item">Stackify</span>
-    <span class="logo-item">Vantage</span>
+<!-- ═══ LOGOS ═══ -->
+<div class="logos-section reveal">
+  <div class="logos-label">Trusted by teams at</div>
+  <div class="logos-row">
+    <span>Acme Corp</span><span>Nexus Labs</span><span>Orbit Tech</span>
+    <span>PeakFlow</span><span>Stackify</span><span>Vantage</span>
   </div>
 </div>
+<hr class="divider">
 
-<!-- HOW IT WORKS -->
-<section class="how" id="how">
-  <div class="how-inner">
-    <span class="section-label">How it works</span>
-    <h2>Three steps to your first dashboard</h2>
-    <p class="section-sub">Go from raw database to shareable chart in under five minutes.</p>
-    <div class="steps">
-      <div class="step reveal">
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how-section" id="how">
+  <div class="s-inner center">
+    <span class="s-label">How it works</span>
+    <h2 class="s-h2">From database to dashboard<br>in <em>three steps</em></h2>
+    <p class="s-sub">No setup wizard. No documentation to read. Just connect, ask, and done.</p>
+    <div class="steps-grid">
+      <div class="step-card reveal">
         <div class="step-num">1</div>
         <h3>Connect your database</h3>
-        <p>Paste a connection string for PostgreSQL, MySQL, BigQuery, Snowflake, or any other source. Takes about 30 seconds.</p>
+        <p>Paste a connection string. PostgreSQL, MySQL, BigQuery, Snowflake, or 15+ others. Read-only by default. Takes 30 seconds.</p>
       </div>
-      <div class="step reveal">
+      <div class="step-card reveal delay-1">
         <div class="step-num">2</div>
-        <h3>Ask a question</h3>
-        <p>Type what you want to know in plain English. "Show top customers by revenue this quarter." Supaboard writes the query for you.</p>
+        <h3>Ask your question</h3>
+        <p>Type exactly what you want to know. "Top 10 customers by revenue this quarter." We write the query, run it, and return results instantly.</p>
       </div>
-      <div class="step reveal">
+      <div class="step-card reveal delay-2">
         <div class="step-num">3</div>
-        <h3>Share or embed</h3>
-        <p>Results come back as a chart or table. Share a link, export to PDF, or embed the dashboard anywhere with one click.</p>
+        <h3>Share or schedule</h3>
+        <p>Get a shareable link, embed the chart anywhere, export to PDF, or schedule a weekly email report. One click.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
+<!-- ═══ FEATURES ═══ -->
 <section id="features">
-  <div class="features-inner">
-    <span class="section-label">Features</span>
-    <h2>Built for teams that need <em>answers fast</em></h2>
-    <p class="section-sub">No data engineer required. Works for anyone who can type.</p>
+  <div class="s-inner">
+    <span class="s-label">Features</span>
+    <h2 class="s-h2">Everything you need,<br><em>nothing you don't</em></h2>
+    <p class="s-sub">Built for speed. Every feature ships because a real team needed it.</p>
     <div class="features-grid">
-      <div class="feature-card reveal">
-        <div class="feature-icon">💬</div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">💬</div>
         <h3>Plain English Queries</h3>
-        <p>Type your question and get results back. No SQL knowledge needed. Works for any business question you can think of.</p>
+        <p>Type your question. We generate the SQL, run it, and return charts. You can also view and edit the generated SQL at any time.</p>
       </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon">⚡</div>
-        <h3>Instant Dashboards</h3>
-        <p>Charts and tables are generated automatically from your results. No configuration, no drag-and-drop setup required.</p>
+      <div class="feat-card reveal delay-1">
+        <div class="feat-icon">⚡</div>
+        <h3>Instant Charts</h3>
+        <p>Results come back as bar charts, line charts, pie charts, or tables. Auto-selected based on your data shape. Customizable in one click.</p>
       </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon">🔗</div>
-        <h3>20+ Data Sources</h3>
-        <p>Connect PostgreSQL, MySQL, BigQuery, Snowflake, Redshift, MongoDB, and more out of the box.</p>
+      <div class="feat-card reveal delay-2">
+        <div class="feat-icon">🔗</div>
+        <h3>20+ Connectors</h3>
+        <p>PostgreSQL, MySQL, BigQuery, Snowflake, Redshift, MongoDB, Supabase, and more. New connectors added every month.</p>
       </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon">🔒</div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">🔒</div>
         <h3>Secure by Default</h3>
-        <p>SOC 2 compliant. Your data stays in your infrastructure. Row-level security and SSO are included on all paid plans.</p>
+        <p>Read-only connections. SOC 2 Type II certified. Data never stored. Row-level security and SSO on all paid plans.</p>
       </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon">📤</div>
-        <h3>Easy Sharing</h3>
-        <p>Send a link or embed dashboards in Notion, Slack, or any internal wiki. No login required for viewers.</p>
+      <div class="feat-card reveal delay-1">
+        <div class="feat-icon">📤</div>
+        <h3>Share Anywhere</h3>
+        <p>Public links, embed codes for Notion or Confluence, Slack messages, or scheduled PDF reports by email.</p>
       </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon">🔔</div>
-        <h3>Scheduled Alerts</h3>
-        <p>Get notified by Slack or email when a number crosses a threshold. Set it up in under a minute.</p>
+      <div class="feat-card reveal delay-2">
+        <div class="feat-icon">🔔</div>
+        <h3>Alerts and Schedules</h3>
+        <p>Get a Slack or email ping when a metric crosses a threshold. Or send a weekly digest to your whole team automatically.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONNECTORS -->
-<section class="connectors" id="connectors">
-  <div class="connectors-inner">
-    <span class="section-label">Integrations</span>
-    <h2>Works with your <em>existing stack</em></h2>
-    <p class="section-sub">No migration needed. Connect to what you already use.</p>
-    <div class="connector-list reveal">
-      <span class="connector-tag">PostgreSQL</span>
-      <span class="connector-tag">MySQL</span>
-      <span class="connector-tag">BigQuery</span>
-      <span class="connector-tag">Snowflake</span>
-      <span class="connector-tag">Redshift</span>
-      <span class="connector-tag">MongoDB</span>
-      <span class="connector-tag">Supabase</span>
-      <span class="connector-tag">PlanetScale</span>
-      <span class="connector-tag">Neon</span>
-      <span class="connector-tag">SQLite</span>
-      <span class="connector-tag">Salesforce</span>
-      <span class="connector-tag">HubSpot</span>
-      <span class="connector-tag">Stripe</span>
-      <span class="connector-tag">Google Sheets</span>
-      <span class="connector-tag">Airtable</span>
-      <span class="connector-tag">Notion</span>
-      <span class="connector-tag">REST API</span>
-      <span class="connector-tag">CSV Upload</span>
+<!-- ═══ CONNECTORS ═══ -->
+<section class="connectors-section" id="connectors">
+  <div class="s-inner center">
+    <span class="s-label">Integrations</span>
+    <h2 class="s-h2">Works with your <em>existing stack</em></h2>
+    <p class="s-sub">No migration. No new infrastructure. Connect to what you already have.</p>
+    <div class="conn-grid reveal">
+      <span class="conn-tag"><span class="conn-dot"></span>PostgreSQL</span>
+      <span class="conn-tag"><span class="conn-dot"></span>MySQL</span>
+      <span class="conn-tag"><span class="conn-dot"></span>BigQuery</span>
+      <span class="conn-tag"><span class="conn-dot"></span>Snowflake</span>
+      <span class="conn-tag"><span class="conn-dot"></span>Redshift</span>
+      <span class="conn-tag"><span class="conn-dot"></span>MongoDB</span>
+      <span class="conn-tag"><span class="conn-dot"></span>Supabase</span>
+      <span class="conn-tag"><span class="conn-dot"></span>PlanetScale</span>
+      <span class="conn-tag"><span class="conn-dot"></span>Neon</span>
+      <span class="conn-tag"><span class="conn-dot"></span>SQLite</span>
+      <span class="conn-tag"><span class="conn-dot"></span>Salesforce</span>
+      <span class="conn-tag"><span class="conn-dot"></span>HubSpot</span>
+      <span class="conn-tag"><span class="conn-dot"></span>Stripe</span>
+      <span class="conn-tag"><span class="conn-dot"></span>Google Sheets</span>
+      <span class="conn-tag"><span class="conn-dot"></span>Airtable</span>
+      <span class="conn-tag"><span class="conn-dot"></span>Notion</span>
+      <span class="conn-tag"><span class="conn-dot"></span>REST API</span>
+      <span class="conn-tag"><span class="conn-dot"></span>CSV Upload</span>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
+<!-- ═══ TESTIMONIALS ═══ -->
 <section id="testimonials">
-  <div class="testimonials-inner">
-    <span class="section-label">Testimonials</span>
-    <h2>Teams love <em>using it</em></h2>
-    <p class="section-sub">From solo founders to 200-person ops teams.</p>
+  <div class="s-inner center">
+    <span class="s-label">Testimonials</span>
+    <h2 class="s-h2">Teams that <em>moved faster</em></h2>
+    <p class="s-sub">From solo founders to 200-person operations teams.</p>
     <div class="testi-grid">
       <div class="testi-card reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p>"We used to wait 3 days for a report from our data team. Now I get the answer in 30 seconds myself. Genuinely changed how we run weekly reviews."</p>
+        <div class="stars">★★★★★</div>
+        <blockquote>"We used to wait 3 days for a report from our data team. Now I get the answer in 30 seconds myself. Changed how we run weekly reviews."</blockquote>
         <div class="testi-author">
-          <div class="testi-avatar">SR</div>
-          <div>
-            <div class="testi-name">Sarah R.</div>
-            <div class="testi-role">Head of Operations, Acme Corp</div>
-          </div>
+          <div class="avatar">SR</div>
+          <div><div class="author-name">Sarah R.</div><div class="author-role">Head of Operations, Acme Corp</div></div>
         </div>
       </div>
-      <div class="testi-card reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p>"I connected our Postgres database, typed a question, and had a chart in under two minutes. Setup was easier than expected and it just worked."</p>
+      <div class="testi-card reveal delay-1">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Connected our Postgres database, asked a question, had a chart in under two minutes. Easier than any BI tool I've tried in ten years."</blockquote>
         <div class="testi-author">
-          <div class="testi-avatar">MK</div>
-          <div>
-            <div class="testi-name">Marcus K.</div>
-            <div class="testi-role">CTO, Nexus Labs</div>
-          </div>
+          <div class="avatar">MK</div>
+          <div><div class="author-name">Marcus K.</div><div class="author-role">CTO, Nexus Labs</div></div>
         </div>
       </div>
-      <div class="testi-card reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p>"The connector setup was the easiest part. Having everything in one place without needing to write SQL has saved our team hours every week."</p>
+      <div class="testi-card reveal delay-2">
+        <div class="stars">★★★★★</div>
+        <blockquote>"The alert system alone is worth it. I get a Slack message whenever revenue drops below target instead of finding out during a board meeting."</blockquote>
         <div class="testi-author">
-          <div class="testi-avatar">JP</div>
-          <div>
-            <div class="testi-name">Jamie P.</div>
-            <div class="testi-role">Product Lead, Stackify</div>
-          </div>
+          <div class="avatar">JP</div>
+          <div><div class="author-name">Jamie P.</div><div class="author-role">Product Lead, Stackify</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
-<section class="faq" id="faq">
-  <div class="faq-inner">
-    <span class="section-label">FAQ</span>
-    <h2>Common <em>questions</em></h2>
-    <p class="section-sub" style="margin-bottom:2rem;">If you have a question not listed here, reach out at hello@supaboard.fun</p>
-    <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Do I need to know SQL?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">No. You type questions in plain English and Supaboard.fun handles the query. You can also view and edit the generated SQL if you want to.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Is my data safe?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">Yes. We use read-only connections by default. Your data never leaves your infrastructure. We are SOC 2 Type II certified and all data in transit is encrypted.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Which databases are supported?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">PostgreSQL, MySQL, BigQuery, Snowflake, Redshift, MongoDB, Supabase, PlanetScale, Neon, SQLite, and more. We also support CSV uploads and REST APIs. New connectors ship every month.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Can I share dashboards with people outside my team?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">Yes. You can create a public share link for any dashboard. Viewers do not need a Supaboard.fun account. You can also password-protect shared links.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          What happens when I hit the free plan limit?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">You will get a notification before you run out. You can upgrade at any time and your existing dashboards and data sources carry over automatically.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Is there a self-hosted option?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">Yes, on the Enterprise plan. You can deploy Supaboard.fun entirely within your own infrastructure. Contact us at hello@supaboard.fun to learn more.</div>
-      </div>
+<!-- ═══ PRICING ═══ -->
+<section id="pricing" style="background:var(--bg2);border-top:1px solid var(--border)">
+  <div class="s-inner center">
+    <span class="s-label">Pricing</span>
+    <h2 class="s-h2">Simple, <em>transparent pricing</em></h2>
+    <p class="s-sub">Start free. Upgrade when your team grows. Cancel any time.</p>
+    <div class="pricing-toggle">
+      <button class="ptog-btn active" id="ptog-mo" onclick="setPricing('monthly')">Monthly</button>
+      <button class="ptog-btn" id="ptog-yr" onclick="setPricing('annual')">Annual <span class="annual-badge">Save 25%</span></button>
     </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing">
-  <div class="pricing-inner">
-    <span class="section-label">Pricing</span>
-    <h2>Simple, <em>transparent pricing</em></h2>
-    <p class="section-sub">Start free. Upgrade when your team grows. No surprises.</p>
     <div class="pricing-grid">
-      <div class="pricing-card reveal">
-        <h3>Starter</h3>
-        <div class="price">$0 <span>/ mo</span></div>
-        <p class="price-desc">For individuals and small projects</p>
-        <ul class="feature-list">
+      <div class="p-card reveal">
+        <div class="p-name">Starter</div>
+        <div class="p-price" id="price-starter">$0 <sub>/ mo</sub></div>
+        <p class="p-desc">For individuals and small projects</p>
+        <ul class="p-list">
           <li>1 data source</li>
           <li>50 queries per month</li>
           <li>5 dashboards</li>
           <li>7-day history</li>
           <li>Community support</li>
         </ul>
-        <a href="#" class="btn-plan">Get Started Free</a>
+        <a href="#waitlist" class="p-btn">Get Started Free</a>
       </div>
-      <div class="pricing-card featured reveal">
-        <div class="plan-badge">Most Popular</div>
-        <h3>Pro</h3>
-        <div class="price">$49 <span>/ mo</span></div>
-        <p class="price-desc">For growing teams</p>
-        <ul class="feature-list">
+      <div class="p-card pop reveal delay-1">
+        <div class="pop-badge">Most Popular</div>
+        <div class="p-name">Pro</div>
+        <div class="p-price" id="price-pro">$49 <sub>/ mo</sub></div>
+        <p class="p-desc">For growing teams</p>
+        <ul class="p-list">
           <li>10 data sources</li>
           <li>Unlimited queries</li>
           <li>Unlimited dashboards</li>
@@ -676,42 +771,87 @@
           <li>Slack and email alerts</li>
           <li>Priority support</li>
         </ul>
-        <a href="#" class="btn-plan primary">Start Free Trial</a>
+        <a href="#waitlist" class="p-btn fill">Start Free Trial</a>
       </div>
-      <div class="pricing-card reveal">
-        <h3>Enterprise</h3>
-        <div class="price">Custom</div>
-        <p class="price-desc">For large teams with specific needs</p>
-        <ul class="feature-list">
-          <li>Unlimited sources</li>
+      <div class="p-card reveal delay-2">
+        <div class="p-name">Enterprise</div>
+        <div class="p-price">Custom</div>
+        <p class="p-desc">For large teams with specific needs</p>
+        <ul class="p-list">
           <li>Unlimited everything</li>
           <li>SSO and SAML</li>
           <li>Row-level security</li>
-          <li>Dedicated support</li>
-          <li>SLA included</li>
+          <li>Self-hosted option</li>
+          <li>Dedicated support + SLA</li>
         </ul>
-        <a href="#" class="btn-plan">Contact Sales</a>
+        <a href="mailto:hello@supaboard.fun" class="p-btn">Contact Sales</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<div class="cta-section reveal">
-  <span class="section-label">Get started</span>
-  <h2>Ready to stop <em>guessing</em>?</h2>
-  <p>Ask your first question in under two minutes. Free to start, no setup required.</p>
-  <button class="btn-primary" style="font-size:1rem;padding:0.9rem 2.25rem;">Start for Free</button>
-</div>
+<!-- ═══ FAQ ═══ -->
+<section class="faq-section" id="faq">
+  <div class="s-inner">
+    <span class="s-label">FAQ</span>
+    <h2 class="s-h2">Common <em>questions</em></h2>
+    <div class="faq-wrap">
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">Do I need to know SQL?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><p>No. You type your question in plain English and Supaboard.fun handles the query. You can also view and edit the generated SQL if you want full control.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">Is my data safe?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><p>Yes. We connect with read-only credentials by default. Your data never gets stored on our servers. We are SOC 2 Type II certified and all connections are encrypted in transit.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">Which databases are supported?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><p>PostgreSQL, MySQL, BigQuery, Snowflake, Redshift, MongoDB, Supabase, PlanetScale, Neon, SQLite, and more. We also support CSV uploads, REST APIs, Salesforce, HubSpot, Stripe, and Google Sheets. New connectors ship every month.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">Can I share dashboards with people outside my team?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><p>Yes. You can create a public share link for any dashboard. Viewers don't need an account. You can also password-protect links or restrict access to specific email domains.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">What happens when I reach the free plan limit?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><p>You get a notification before hitting the limit. Upgrading is instant and your existing dashboards and data sources carry over automatically. No data lost, no reconfiguration.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">Is there a self-hosted option?<span class="faq-icon">+</span></button>
+        <div class="faq-body"><p>Yes, on the Enterprise plan. Deploy Supaboard.fun entirely inside your own infrastructure. Reach out at hello@supaboard.fun for details.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- FOOTER -->
+<!-- ═══ WAITLIST / SIGNUP ═══ -->
+<section class="waitlist-section" id="waitlist">
+  <div class="waitlist-inner reveal">
+    <span class="s-label">Get started</span>
+    <h2 class="s-h2">Ready to stop <em>guessing</em>?</h2>
+    <p class="s-sub">Join 2,400+ teams already using Supaboard.fun. Free to start, no credit card needed.</p>
+    <form class="wl-form" id="wl-form" onsubmit="submitWaitlist(event)">
+      <div class="wl-row">
+        <input class="wl-input" type="text" name="name" placeholder="Your name" required />
+        <input class="wl-input" type="email" name="email" placeholder="Work email" required />
+      </div>
+      <button type="submit" class="wl-submit" id="wl-submit-btn">Start for Free</button>
+      <p class="wl-note">No credit card required. Unsubscribe any time.</p>
+    </form>
+    <div class="wl-success" id="wl-success">
+      <span>✓</span> <span>You're on the list! We'll be in touch shortly.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
-      <a href="#" class="footer-logo">Supaboard<span>.fun</span></a>
-      <p>Connect your data and get answers in seconds. No SQL, no complexity.</p>
+      <div class="footer-brand-logo">Supaboard<em>.fun</em></div>
+      <p>Connect your data and get answers in seconds. No SQL, no complexity, no waiting.</p>
     </div>
-    <div class="footer-cols">
+    <div class="footer-cols-wrap" style="display:contents">
       <div class="footer-col">
         <h4>Product</h4>
         <a href="#features">Features</a>
@@ -730,148 +870,194 @@
         <h4>Company</h4>
         <a href="#">About</a>
         <a href="#">Careers</a>
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
     <p class="footer-copy">2026 Supaboard.fun. All rights reserved.</p>
     <div class="footer-socials">
-      <a href="#" title="Twitter">𝕏</a>
-      <a href="#" title="LinkedIn">in</a>
-      <a href="#" title="GitHub">⌥</a>
+      <a href="#" class="soc-btn" title="Twitter / X">𝕏</a>
+      <a href="#" class="soc-btn" title="LinkedIn">in</a>
+      <a href="#" class="soc-btn" title="GitHub">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+      </a>
     </div>
   </div>
 </footer>
 
+<!-- BACK TO TOP -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
 <script>
-  /* ── Mobile nav ── */
-  function toggleNav() {
-    document.getElementById('navbar').classList.toggle('open');
-  }
-  document.querySelectorAll('.nav-links a').forEach(function(link) {
-    link.addEventListener('click', function() {
-      document.getElementById('navbar').classList.remove('open');
-    });
-  });
+/* ── Scroll events ── */
+window.addEventListener('scroll', function() {
+  var nav = document.getElementById('nav');
+  if (window.scrollY > 20) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
+  var bt = document.getElementById('back-top');
+  if (window.scrollY > 500) bt.classList.add('show'); else bt.classList.remove('show');
+});
 
-  /* ── Smooth scroll helper ── */
-  function scrollTo(id) {
-    var el = document.querySelector(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }
+/* ── Mobile nav ── */
+function toggleMobileNav() {
+  document.getElementById('nav').classList.toggle('open');
+}
+document.querySelectorAll('#nav-links a').forEach(function(a) {
+  a.addEventListener('click', function() { document.getElementById('nav').classList.remove('open'); });
+});
 
-  /* ── Scroll reveal ── */
-  var revealObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(function(el) {
-    revealObserver.observe(el);
-  });
+/* ── Scroll reveal ── */
+var ro = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(function(el) { ro.observe(el); });
 
-  /* ── Demo bar animation ── */
-  var barsAnimated = false;
-  var barObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting && !barsAnimated) {
-        barsAnimated = true;
-        startDemoAnimation();
-      }
-    });
-  }, { threshold: 0.3 });
-  var demoWin = document.getElementById('demo-win');
-  if (demoWin) barObserver.observe(demoWin);
-
-  function startDemoAnimation() {
-    /* Typewriter */
-    var text = 'What was our total revenue last month, broken down by product?';
-    var el = document.getElementById('demo-query-text');
-    var cursor = document.getElementById('demo-cursor');
-    var i = 0;
-    el.textContent = '';
-    var typing = setInterval(function() {
-      if (i < text.length) {
-        el.textContent += text[i];
-        i++;
-      } else {
-        clearInterval(typing);
-        /* After typing done, show charts */
-        setTimeout(function() {
-          cursor.style.display = 'none';
-          var charts = document.getElementById('demo-charts');
-          charts.style.opacity = '1';
-          /* Animate bars with stagger */
-          animateBars('bars-purple');
-          animateBars('bars-green');
-          /* Count-up numbers */
-          countUp('demo-rev', 0, 284920, 1200, '$', '');
-          countUp('demo-growth', 0, 18.4, 1000, '+', '%');
-        }, 300);
-      }
-    }, 32);
-  }
-
-  function animateBars(containerId) {
-    var bars = document.querySelectorAll('#' + containerId + ' .demo-bar');
-    var heights = [];
-    bars.forEach(function(b) { heights.push(b.style.getPropertyValue('--h') || '70%'); });
-    bars.forEach(function(b, idx) {
-      setTimeout(function() {
-        b.style.height = heights[idx] || '70%';
-        b.classList.add('visible');
-      }, idx * 80);
-    });
-  }
-
-  function countUp(id, from, to, duration, prefix, suffix) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    var start = null;
-    var isFloat = (to % 1 !== 0);
-    function step(ts) {
-      if (!start) start = ts;
-      var progress = Math.min((ts - start) / duration, 1);
-      var ease = 1 - Math.pow(1 - progress, 3);
-      var val = from + (to - from) * ease;
-      if (isFloat) {
-        el.textContent = prefix + val.toFixed(1) + suffix;
-      } else {
-        el.textContent = prefix + Math.floor(val).toLocaleString() + suffix;
-      }
-      if (progress < 1) requestAnimationFrame(step);
+/* ── Stat count-up ── */
+var statsDone = false;
+var statsObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting && !statsDone) {
+      statsDone = true;
+      document.querySelectorAll('[data-count]').forEach(function(el) {
+        animateCount(el, 0, parseInt(el.dataset.count), 1400, el.dataset.prefix || '', el.dataset.suffix || '');
+      });
     }
-    requestAnimationFrame(step);
-  }
+  });
+}, { threshold: 0.4 });
+var heroStats = document.querySelector('.stats-strip');
+if (heroStats) statsObs.observe(heroStats);
 
-  /* ── FAQ toggle ── */
-  function toggleFaq(btn) {
-    var item = btn.parentElement;
-    var isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(function(el) {
-      el.classList.remove('open');
-    });
-    if (!isOpen) item.classList.add('open');
+function animateCount(el, from, to, dur, prefix, suffix) {
+  var start = null;
+  function step(ts) {
+    if (!start) start = ts;
+    var p = Math.min((ts - start) / dur, 1);
+    var ease = 1 - Math.pow(1 - p, 3);
+    var val = Math.round(from + (to - from) * ease);
+    el.textContent = prefix + val.toLocaleString() + suffix;
+    if (p < 1) requestAnimationFrame(step);
   }
+  requestAnimationFrame(step);
+}
 
-  /* ── Auto-replay demo on interval ── */
-  setInterval(function() {
-    barsAnimated = false;
-    var cursor = document.getElementById('demo-cursor');
-    if (cursor) cursor.style.display = 'inline-block';
-    var charts = document.getElementById('demo-charts');
-    if (charts) charts.style.opacity = '0';
-    document.querySelectorAll('.demo-bar').forEach(function(b) {
-      b.style.height = '0';
-      b.classList.remove('visible');
-    });
-    setTimeout(startDemoAnimation, 400);
-  }, 12000);
+/* ── Demo typewriter + charts ── */
+var QUERIES = [
+  { q: 'What was our total revenue last month?', rev: '$284,920', growth: '+18.4%', bars1: [60,45,80,70,100,85,75], bars2: [40,55,65,50,70,80,100] },
+  { q: 'Show me top 3 products by revenue this quarter', rev: '$531,200', growth: '+9.2%', bars1: [45,70,55,90,65,100,80], bars2: [30,50,70,60,80,55,95] },
+  { q: 'How many new users signed up this week?', rev: '3,842', growth: '+31%', bars1: [35,55,75,85,65,90,100], bars2: [50,60,45,75,80,70,100] },
+];
+var qIdx = 0;
+var demoRunning = false;
+
+function runDemo() {
+  if (demoRunning) return;
+  demoRunning = true;
+  var data = QUERIES[qIdx];
+  qIdx = (qIdx + 1) % QUERIES.length;
+
+  /* Reset */
+  var qEl = document.getElementById('demo-q');
+  var csr = document.getElementById('demo-csr');
+  var results = document.getElementById('demo-results');
+  qEl.textContent = '';
+  csr.style.display = 'inline-block';
+  results.classList.remove('show');
+  document.getElementById('dc-rev').textContent = '0';
+  document.getElementById('dc-growth').textContent = '0';
+  document.querySelectorAll('.dc-bar').forEach(function(b) { b.style.height = '0%'; });
+
+  /* Type */
+  var i = 0;
+  var typing = setInterval(function() {
+    if (i < data.q.length) { qEl.textContent += data.q[i++]; }
+    else {
+      clearInterval(typing);
+      setTimeout(function() {
+        csr.style.display = 'none';
+        results.classList.add('show');
+        /* Animate bars */
+        animateBars('dc-bars1', data.bars1);
+        animateBars('dc-bars2', data.bars2);
+        /* Count up values */
+        var revIsNum = !data.rev.startsWith('$');
+        countUpStr('dc-rev', data.rev, 1200);
+        countUpStr('dc-growth', data.growth, 1000);
+        setTimeout(function() { demoRunning = false; }, 1500);
+      }, 350);
+    }
+  }, 28);
+}
+
+function animateBars(id, heights) {
+  var bars = document.querySelectorAll('#' + id + ' .dc-bar');
+  bars.forEach(function(b, i) {
+    setTimeout(function() { b.style.height = heights[i] + '%'; }, i * 70);
+  });
+}
+
+function countUpStr(id, target, dur) {
+  var el = document.getElementById(id);
+  var prefix = '', suffix = '', num = 0;
+  if (target.startsWith('$')) { prefix = '$'; num = parseFloat(target.slice(1).replace(/,/g, '')); }
+  else if (target.startsWith('+')) { prefix = '+'; num = parseFloat(target.slice(1)); suffix = '%'; }
+  else { num = parseFloat(target.replace(/,/g, '')); }
+  var isFloat = target.includes('.');
+  var start = null;
+  function step(ts) {
+    if (!start) start = ts;
+    var p = Math.min((ts - start) / dur, 1);
+    var ease = 1 - Math.pow(1 - p, 3);
+    var val = num * ease;
+    var disp = isFloat ? val.toFixed(1) : Math.round(val).toLocaleString();
+    el.textContent = prefix + disp + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* Start demo when panel comes into view */
+var demoObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) { setTimeout(runDemo, 600); } });
+}, { threshold: 0.3 });
+var dp = document.getElementById('demo-panel');
+if (dp) demoObs.observe(dp);
+
+/* Auto cycle */
+setInterval(function() {
+  if (!demoRunning) runDemo();
+}, 8000);
+
+/* ── Pricing toggle ── */
+var pricing = { monthly: { starter: '$0', pro: '$49', ent: 'Custom' }, annual: { starter: '$0', pro: '$37', ent: 'Custom' } };
+function setPricing(mode) {
+  document.getElementById('ptog-mo').classList.toggle('active', mode === 'monthly');
+  document.getElementById('ptog-yr').classList.toggle('active', mode === 'annual');
+  var d = pricing[mode];
+  document.getElementById('price-starter').innerHTML = d.starter + ' <sub>/ mo</sub>';
+  document.getElementById('price-pro').innerHTML = d.pro + ' <sub>/ mo</sub>';
+}
+
+/* ── FAQ ── */
+function toggleFaq(btn) {
+  var item = btn.parentElement;
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(el) { el.classList.remove('open'); });
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ── Waitlist form ── */
+function submitWaitlist(e) {
+  e.preventDefault();
+  var btn = document.getElementById('wl-submit-btn');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+  /* Simulate async submit */
+  setTimeout(function() {
+    document.getElementById('wl-form').style.display = 'none';
+    document.getElementById('wl-success').classList.add('show');
+  }, 900);
+}
 </script>
 </body>
 </html>
